@@ -1,33 +1,31 @@
-const AuthModel = require("../models/AuthModel");
+const Create_Account = require("../models/Create_AccountModel")
 
-class AuthController {
+class Create_AccountController {
     constructor(app, pool) {
         this.app = app;
-        this.authModel = new AuthModel(pool);
+        this.Create_AccountModel = new Create_Account(pool);
 
         // Rota de login
-        app.get("/login", (req, res) => {
-            res.render("Auth/Login", { erro: req.session.error });
+        app.get("/create", (req, res) => {
+            res.render("CreateCount/Create", { erro: req.session.error });
             delete req.session.error;
         });
 
-        app.post("/login", async (req, res) => {
+        app.post("/create", async (req, res) => {
             const { usuario, senha } = req.body;
 
             if (!usuario || !senha) {
                 req.session.error = 'Usuário e senha são obrigatórios';
-                return res.redirect('/login');
+                return res.redirect('/create');
             }
 
-            const result = await this.authModel.login(usuario, senha);
+            const result = await this.Create_AccountModel.create(usuario, senha);
             
             if (result.success) {
-                req.session.user = result.user;
-                req.session.isAuthenticated = true;
-                return res.redirect('/');
+                return res.redirect('/login');
             } else {
                 req.session.error = result.message;
-                return res.redirect('/login');
+                return res.redirect('/create');
             }
         });
 
@@ -39,4 +37,4 @@ class AuthController {
     }
 }
 
-module.exports = AuthController;
+module.exports = Create_AccountController;

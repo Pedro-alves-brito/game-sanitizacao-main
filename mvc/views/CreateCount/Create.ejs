@@ -11,8 +11,8 @@
         <% if (erro) { %>
             <h1><%= erro %></h1>
         <% } %>
-        <h1>Login</h1>
-        <form action="/login" method="POST">
+        <h1>Criar conta</h1>
+        <form action="/create" method="POST">
             <div class="form-group">
                 <label for="usuario">Usuário</label>
                 <input type="text" name="usuario" id="usuario" required 
@@ -28,10 +28,10 @@
             </div>
             
             <div class="form-group">
-                <button type="submit">Entrar</button>
+                <button type="submit">Criar conta</button>
             </div>
         </form>
-        <a href="/create">Criar Conta</a>
+        <a href="/login">Conequitar Conta</a>
     </main>
 </body>
 </html>

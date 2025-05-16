@@ -1,43 +1,78 @@
-const express = require("express")
-const path = require("path")
-const HomeController = require("./mvc/controllers/HomeController")
-const AuthController = require("./mvc/controllers/AuthController")
+const express = require("express");
+const mysql2 = require("mysql2/promise");
+const path = require("path");
+const session = require('express-session');
+const HomeController = require("./mvc/controllers/HomeController");
+const AuthController = require("./mvc/controllers/AuthController");
+const Create_AccountController = require("./mvc/controllers/Create_AccountController");
 
 class Server
 {
-
     app
-    porta 
+    port = 3000
+    mysql
+    pool
 
-    constructor()
-    {
+    constructor(){
         this.app = express()
-        this.porta = 3000
-        
-        this.on()
-        this.configMiddleware()
-        this.start()
+        this.mysql = mysql2
+
+        this.Configue()
+        this.CreatePoll()
+        this.Strat()
+        this.On()
     }
 
-    start()
-    {
-        new HomeController(this.app)
-        new AuthController(this.app)
+    Strat(){
+        new HomeController(this.app);
+        new AuthController(this.app, this.pool);
+        new Create_AccountController(this.app, this.pool)
     }
 
-    configMiddleware()
-    {
-        this.app.use(express.urlencoded({extended: true}))
-        this.app.use(express.static(path.join(__dirname, "mvc/views/public")))
-        this.app.use(express.json())
-        this.app.set("view engine", "ejs")
-        this.app.set("views","mvc/views")
-       
+    Configue(){
+
+        // Configuração básica do Express
+        this.app.use(express.urlencoded({ extended: true }));
+        this.app.use(express.json());
+        this.app.use(express.static(path.join(__dirname, "mvc/views/public")));
+        this.app.set("view engine", "ejs");
+        this.app.set("views", path.join(__dirname, "mvc/views"));
+
+        // Configuração de sessão simplificada
+        this.app.use(session({
+            secret: 'segredoSimplesParaSessao',
+            resave: false,
+            saveUninitialized: true
+        }));
+
+        // Middleware para passar dados do usuário para as views
+        this.app.use((req, res, next) => {
+            res.locals.user = req.session.user;
+            res.locals.isAuthenticated = req.session.isAuthenticated;
+            next();
+        });
     }
 
-    on()
-    {
-        this.app.listen(this.porta)
+    CreatePoll(){
+        this.pool = this.mysql.createPool({
+            host: 'localhost',
+            user: 'root',
+            password: '',
+            database: 'game_sanitizacao',
+            waitForConnections: true,
+            connectionLimit: 10,
+            queueLimit: 0
+        });
+    }
+
+    On(){
+        // Rota de erro 404
+        this.app.use((req, res) => {
+            res.status(404).render('error/404');
+        });
+
+        // Inicia o servidor
+        this.app.listen(this.port)
     }
 }
 
