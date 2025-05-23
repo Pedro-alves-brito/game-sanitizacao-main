@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Área do Usuário</title>
+  <link rel="stylesheet" href="/css/OS.css">
+</head>
+<body>
+  <div class="desktop" id="desktop" data-bg-index="<%= bgIndex || 0 %>">
+    <div class="desktop-icon" id="editorIcon" style="left: <%= iconeX %>; top: <%= iconeY %>;">
+      <img src="/img/EditIcon.png" alt="Editor">
+      <div>Editor</div>
+    </div>
+
+    <div class="window" id="editorWindow" style="display:none;">
+      <div class="title-bar">
+        <span>Editor de Texto</span>
+        <button class="close-btn" id="closeEditor">×</button>
+      </div>
+      <textarea class="editor" id="textEditor" placeholder="Digite seu texto aqui..."><%= texto %></textarea>
+    </div>
+
+    <div class="taskbar">
+      <div>MiniOS - Bem-vindo, <%= user.nome %></div>
+      <button class="change-bg-btn" id="changeBg">Mudar Fundo</button>
+    </div>
+  </div>
+  <script type="module" src="/js/OS.js"></script>
+</body>
+</html>

@@ -9,7 +9,7 @@ class HomeController {
         };
 
         // Rota principal
-        app.get('/', checkAuth, (req, res) => {
+        app.get('/Jogo', checkAuth, (req, res) => {
             res.render('Home/index', { user: req.session.user });
         });
 

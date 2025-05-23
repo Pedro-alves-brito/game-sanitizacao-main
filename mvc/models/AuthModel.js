@@ -8,8 +8,6 @@ class AuthModel {
     async login(usuario, senha) {
         try {
 
-            const hashSalvoNoBanco = '$2b$10$tnb4g7zHIvkPrpvOG8rMEeEMHH7StdaBBoIYT40k6OlwBb9FqGZdG'; // Substitua com um hash real
-
             // 1. Busca apenas pelo usuário
             const [rows] = await this.pool.execute(
                 'SELECT id, usuario, senha_hash FROM usuarios WHERE usuario = ? LIMIT 1',

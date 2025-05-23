@@ -5,6 +5,7 @@ const session = require('express-session');
 const HomeController = require("./mvc/controllers/HomeController");
 const AuthController = require("./mvc/controllers/AuthController");
 const Create_AccountController = require("./mvc/controllers/Create_AccountController");
+const OsController = require("./mvc/controllers/OsController");
 
 class Server
 {
@@ -27,6 +28,7 @@ class Server
         new HomeController(this.app);
         new AuthController(this.app, this.pool);
         new Create_AccountController(this.app, this.pool)
+        new OsController(this.app, this.pool)
     }
 
     Configue(){

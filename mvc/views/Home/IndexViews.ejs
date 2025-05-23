@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nebula Wars - A Batalha Intergaláctica</title>
+    <style>
+        :root {
+            --primary: #6e00ff;
+            --secondary: #ff00c1;
+            --dark: #0a0a1a;
+            --light: #e0e0ff;
+            --accent: #00f7ff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        @font-face {
+            font-family: 'Orbitron';
+            src: url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+        }
+        
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(110, 0, 255, 0.15) 0%, transparent 25%),
+                radial-gradient(circle at 80% 70%, rgba(255, 0, 193, 0.15) 0%, transparent 25%);
+            overflow-x: hidden;
+        }
+        
+        header {
+            background-color: rgba(10, 10, 26, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 20px 0;
+            position: fixed;
+            width: 100%;
+            z-index: 100;
+            border-bottom: 1px solid var(--primary);
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 10px rgba(110, 0, 255, 0.3);
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .logo-icon::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.5; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+        
+        nav ul li a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+            padding-bottom: 5px;
+        }
+        
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: width 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: var(--accent);
+        }
+        
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+        
+        .hero {
+            height: 100vh;
+            min-height: 800px;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(110, 0, 255, 0.2) 0%, transparent 30%),
+                radial-gradient(circle at 80% 70%, rgba(255, 0, 193, 0.2) 0%, transparent 30%);
+            z-index: -1;
+        }
+        
+        .hero-content {
+            width: 100%;
+            max-width: 800px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero h1 {
+            font-size: 4.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1.1;
+            text-shadow: 0 0 20px rgba(110, 0, 255, 0.3);
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 40px;
+            line-height: 1.6;
+            max-width: 600px;
+            opacity: 0.9;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            border: 2px solid transparent;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(110, 0, 255, 0.3);
+        }
+        
+        .btn-secondary {
+            border-color: var(--accent);
+            color: var(--accent);
+            margin-left: 20px;
+        }
+        
+        .btn-secondary:hover {
+            background-color: rgba(0, 247, 255, 0.1);
+            transform: translateY(-5px);
+        }
+        
+        .trailer-container {
+            position: absolute;
+            right: -200px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 700px;
+            height: 400px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 0 50px rgba(110, 0, 255, 0.3);
+            border: 2px solid rgba(110, 0, 255, 0.5);
+        }
+        
+        .trailer-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #1a0033, #33001a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .play-button {
+            width: 80px;
+            height: 80px;
+            background-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .play-button:hover {
+            transform: scale(1.1);
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .play-button::before {
+            content: '';
+            width: 0;
+            height: 0;
+            border-top: 15px solid transparent;
+            border-bottom: 15px solid transparent;
+            border-left: 25px solid white;
+            margin-left: 5px;
+        }
+        
+        .features-section {
+            padding: 120px 0;
+            background-color: rgba(10, 10, 26, 0.7);
+            backdrop-filter: blur(5px);
+            position: relative;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 80px;
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 3px;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+        
+        .feature-card {
+            background: rgba(20, 20, 40, 0.6);
+            border-radius: 15px;
+            padding: 40px 30px;
+            transition: all 0.3s;
+            border: 1px solid rgba(110, 0, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(110, 0, 255, 0.1), rgba(255, 0, 193, 0.1));
+            z-index: -1;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(110, 0, 255, 0.2);
+            border-color: rgba(110, 0, 255, 0.5);
+        }
+        
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--accent);
+        }
+        
+        .feature-card p {
+            opacity: 0.8;
+            line-height: 1.6;
+        }
+        
+        .help-section {
+            padding: 120px 0;
+            background-color: rgba(15, 15, 35, 0.8);
+            position: relative;
+        }
+        
+        .help-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .help-item {
+            margin-bottom: 15px;
+            border-radius: 10px;
+            overflow: hidden;
+            background: rgba(20, 20, 40, 0.6);
+            border: 1px solid rgba(110, 0, 255, 0.2);
+        }
+        
+        .help-question {
+            padding: 20px 25px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 500;
+            transition: all 0.3s;
+            color: var(--light);
+        }
+        
+        .help-question:hover {
+            background: rgba(110, 0, 255, 0.1);
+        }
+        
+        .help-question::after {
+            content: '+';
+            font-size: 1.8rem;
+            transition: all 0.3s;
+            color: var(--accent);
+        }
+        
+        .help-question.active {
+            background: rgba(110, 0, 255, 0.2);
+        }
+        
+        .help-question.active::after {
+            content: '-';
+        }
+        
+        .help-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+        }
+        
+        .help-answer-content {
+            padding: 0 25px 25px;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+        
+        .cta-section {
+            padding: 150px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 30% 70%, rgba(110, 0, 255, 0.2) 0%, transparent 40%),
+                radial-gradient(circle at 70% 30%, rgba(255, 0, 193, 0.2) 0%, transparent 40%);
+            z-index: -1;
+        }
+        
+        .cta-content h2 {
+            font-size: 3rem;
+            margin-bottom: 30px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .cta-content p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 50px;
+            opacity: 0.9;
+        }
+        
+        footer {
+            background-color: #0a0a1a;
+            padding: 50px 0 30px;
+            border-top: 1px solid rgba(110, 0, 255, 0.3);
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .footer-links a {
+            color: var(--light);
+            text-decoration: none;
+            transition: color 0.3s;
+            opacity: 0.8;
+        }
+        
+        .footer-links a:hover {
+            color: var(--accent);
+            opacity: 1;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            color: var(--light);
+            text-decoration: none;
+        }
+        
+        .social-links a:hover {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            transform: translateY(-5px);
+        }
+        
+        .copyright {
+            opacity: 0.6;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        
+        /* Responsividade */
+        @media (max-width: 1200px) {
+            .trailer-container {
+                right: -300px;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 3.5rem;
+            }
+            
+            .trailer-container {
+                position: relative;
+                right: auto;
+                top: auto;
+                transform: none;
+                width: 100%;
+                max-width: 600px;
+                margin: 50px auto 0;
+            }
+            
+            .hero {
+                height: auto;
+                padding: 150px 0 100px;
+                text-align: center;
+            }
+            
+            .hero-content {
+                max-width: 100%;
+            }
+            
+            .hero p {
+                margin-left: auto;
+                margin-right: auto;
+            }
+            
+            .btn {
+                display: block;
+                max-width: 250px;
+                margin: 0 auto 15px !important;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            nav ul {
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon"></div>
+                    <span>Nebula Wars</span>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#features">Recursos</a></li>
+                        <li><a href="#story">História</a></li>
+                        <li><a href="#media">Mídia</a></li>
+                        <li><a href="#help">Ajuda</a></li>
+                        <li><a href="#community">Comunidade</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+    
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Domine a Galáxia em Nebula Wars</h1>
+                <p>Entre em um universo de batalhas interestelares, alianças estratégicas e tecnologia alienígena. Comande sua frota, desenvolva tecnologias avançadas e lute pelo controle dos sistemas estelares mais valiosos da galáxia.</p>
+                <div class="hero-buttons">
+                    <a href="#" class="btn btn-primary">Jogue Agora</a>
+                    <a href="#" class="btn btn-secondary">Assista ao Trailer</a>
+                </div>
+            </div>
+            
+            <div class="trailer-container">
+                <div class="trailer-placeholder">
+                    <div class="play-button"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="features-section" id="features">
+        <div class="container">
+            <h2 class="section-title">Recursos do Jogo</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🚀</div>
+                    <h3>Combate Espacial Épico</h3>
+                    <p>Participe de batalhas espaciais em tempo real com gráficos impressionantes. Controle naves detalhadas com sistemas de dano realista e física avançada.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🌌</div>
+                    <h3>Universo Expansivo</h3>
+                    <p>Explore mais de 100 sistemas estelares únicos, cada um com planetas, asteroides e anomalias espaciais para descobrir e conquistar.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">⚙️</div>
+                    <h3>Customização Profunda</h3>
+                    <p>Projete e construa sua frota com milhares de combinações possíveis de armas, escudos, motores e sistemas especializados.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">👥</div>
+                    <h3>Alianças Estratégicas</h3>
+                    <p>Forme alianças com outros jogadores, negocie tratados e participe de guerras em grande escala que moldam o destino da galáxia.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🧠</div>
+                    <h3>IA Avançada</h3>
+                    <p>Enfrente inimigos controlados por IA com comportamentos complexos e táticas adaptativas que desafiam até os comandantes mais experientes.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">💻</div>
+                    <h3>Cross-Platform</h3>
+                    <p>Jogue no PC, console ou dispositivo móvel com progressão sincronizada entre plataformas e suporte completo para cross-play.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="help-section" id="help">
+        <div class="container">
+            <h2 class="section-title">Central de Ajuda</h2>
+            <div class="help-container">
+                <div class="help-item">
+                    <div class="help-question">Quais são os requisitos do sistema?</div>
+                    <div class="help-answer">
+                        <div class="help-answer-content">
+                            <p><strong>Mínimos:</strong> Windows 10, Intel i5-4460 / AMD FX-8350, 8GB RAM, GTX 760 / Radeon R7 260x, 30GB de espaço livre</p>
+                            <p><strong>Recomendados:</strong> Windows 10/11, Intel i7-9700K / AMD Ryzen 7 3700X, 16GB RAM, RTX 2060 / Radeon RX 5700, SSD com 30GB livre</p>
+                            <p>O jogo também está disponível para PlayStation 5, Xbox Series X/S e dispositivos móveis com Android 10+/iOS 14+.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="help-item">
+                    <div class="help-question">Como funciona o sistema de progressão?</div>
+                    <div class="help-answer">
+                        <div class="help-answer-content">
+                            <p>Nebula Wars possui um sistema de progressão baseado em:</p>
+                            <ul>
+                                <li><strong>Nível de Comandante:</strong> Aumenta com experiência geral no jogo</li>
+                                <li><strong>Tecnologias:</strong> Pesquise novas armas e sistemas em sua base estelar</li>
+                                <li><strong>Reputação:</strong> Ganhe influência com diferentes facções galácticas</li>
+                                <li><strong>Frota:</strong> Adquira e melhore naves de diversas classes</li>
+                            </ul>
+                            <p>Toda progressão é sincronizada entre plataformas.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="help-item">
+                    <div class="help-question">O jogo tem compras dentro do aplicativo?</div>
+                    <div class="help-answer">
+                        <div class="help-answer-content">
+                            <p>Nebula Wars é um jogo premium sem pay-to-win. Oferecemos:</p>
+                            <ul>
+                                <li>Pacotes cosméticos (pinturas de naves, efeitos visuais)</li>
+                                <li>Expansões de conteúdo (novas campanhas, espécies jogáveis)</li>
+                                <li>Pacotes de conveniência (slots adicionais para frotas)</li>
+                            </ul>
+                            <p>Todos os itens comprados são permanentes e transferíveis entre plataformas.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="help-item">
+                    <div class="help-question">Como participar do beta aberto?</div>
+                    <div class="help-answer">
+                        <div class="help-answer-content">
+                            <p>O beta aberto estará disponível a partir de 15/11/2023. Para participar:</p>
+                            <ol>
+                                <li>Registre-se no site oficial</li>
+                                <li>Faça o pré-cadastro na plataforma de sua escolha</li>
+                                <li>Os participantes selecionados receberão um código de acesso por e-mail</li>
+                                <li>O progresso do beta será mantido no lançamento oficial</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Prepare-se para a Batalha Final</h2>
+                <p>Junte-se a milhões de comandantes em uma experiência espacial sem precedentes. Domine tecnologias alienígenas, forme alianças poderosas e deixe sua marca na galáxia.</p>
+                <a href="#" class="btn btn-primary">Comece Sua Jornada Agora</a>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <div class="logo-icon" style="width: 30px; height: 30px;"></div>
+                    <span>Nebula Wars</span>
+                </div>
+                
+                <div class="footer-links">
+                    <a href="#">Termos de Serviço</a>
+                    <a href="#">Política de Privacidade</a>
+                    <a href="#">Suporte</a>
+                    <a href="#">Carreiras</a>
+                    <a href="#">Contato</a>
+                    <a href="#">Blog</a>
+                </div>
+                
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-discord"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitch"></i></a>
+                </div>
+                
+                <div class="copyright">
+                    <p>&copy; 2023 Stellar Forge Studios. Todos os direitos reservados.</p>
+                    <p>Nebula Wars é uma marca registrada. Todas as outras marcas são propriedade de seus respectivos donos.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // Seção de ajuda expansível
+        document.querySelectorAll('.help-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                const isActive = question.classList.contains('active');
+                
+                // Fecha todas as outras respostas
+                document.querySelectorAll('.help-question').forEach(q => {
+                    if (q !== question) {
+                        q.classList.remove('active');
+                        q.nextElementSibling.style.maxHeight = null;
+                    }
+                });
+                
+                // Alterna a resposta clicada
+                if (isActive) {
+                    question.classList.remove('active');
+                    answer.style.maxHeight = null;
+                } else {
+                    question.classList.add('active');
+                    answer.style.maxHeight = answer.scrollHeight + 'px';
+                }
+            });
+        });
+        
+        // Abre a primeira pergunta por padrão
+        const firstQuestion = document.querySelector('.help-question');
+        if (firstQuestion) {
+            firstQuestion.classList.add('active');
+            firstQuestion.nextElementSibling.style.maxHeight = firstQuestion.nextElementSibling.scrollHeight + 'px';
+        }
+        
+        // Efeito de digitação no título (opcional)
+        const heroTitle = document.querySelector('.hero h1');
+        if (heroTitle) {
+            const originalText = heroTitle.textContent;
+            heroTitle.textContent = '';
+            
+            let i = 0;
+            const typingEffect = setInterval(() => {
+                if (i < originalText.length) {
+                    heroTitle.textContent += originalText.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(typingEffect);
+                }
+            }, 50);
+        }
+    </script>
+
+    <!-- Botão Fixo de Assinatura -->
+    <div class="subscription-floating-btn">
+        <div class="subscription-tooltip">Desbloqueie recursos exclusivos com nossa assinatura premium!</div>
+        <button class="subscription-btn">
+            <i class="fas fa-crown"></i> ASSINAR
+        </button>
+    </div>
+
+    <style>
+        /* Estilos para o botão de assinatura flutuante */
+        .subscription-floating-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+        
+        .subscription-btn {
+            background: linear-gradient(135deg, #ffcc00, #ff9500);
+            color: #1a1a2e;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 25px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 5px 15px rgba(255, 204, 0, 0.4);
+            transition: all 0.3s ease;
+            z-index: 2;
+        }
+        
+        .subscription-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 204, 0, 0.6);
+            background: linear-gradient(135deg, #ffd700, #ffa500);
+        }
+        
+        .subscription-btn i {
+            font-size: 1.2rem;
+        }
+        
+        .subscription-tooltip {
+            background: rgba(10, 10, 26, 0.9);
+            color: #e0e0ff;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            max-width: 250px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            position: relative;
+            border: 1px solid #6e00ff;
+        }
+        
+        .subscription-tooltip::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            right: 30px;
+            border-width: 10px 10px 0;
+            border-style: solid;
+            border-color: rgba(10, 10, 26, 0.9) transparent transparent;
+        }
+        
+        .subscription-floating-btn:hover .subscription-tooltip {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        /* Modal de Assinatura (aparece ao clicar no botão) */
+        .subscription-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .subscription-modal-content {
+            background: linear-gradient(135deg, #0f0f2d, #1a1a4a);
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            padding: 30px;
+            box-shadow: 0 0 30px rgba(110, 0, 255, 0.5);
+            border: 1px solid #6e00ff;
+            position: relative;
+            animation: modalFadeIn 0.4s ease-out;
+        }
+        
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            color: #e0e0ff;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .close-modal:hover {
+            color: #ff00c1;
+        }
+        
+        .subscription-modal h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #ffcc00, #ff9500);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-align: center;
+        }
+        
+        .subscription-plans {
+            display: grid;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .subscription-plan {
+            background: rgba(20, 20, 50, 0.7);
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid rgba(110, 0, 255, 0.3);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .subscription-plan:hover {
+            border-color: #ffcc00;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .subscription-plan.selected {
+            border: 2px solid #ffcc00;
+            background: rgba(30, 30, 70, 0.7);
+        }
+        
+        .plan-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .plan-name {
+            font-size: 1.3rem;
+            color: #ffcc00;
+            font-weight: bold;
+        }
+        
+        .plan-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(90deg, #ffcc00, #ff9500);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .plan-features {
+            list-style: none;
+            margin-bottom: 15px;
+        }
+        
+        .plan-features li {
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 25px;
+        }
+        
+        .plan-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #00f7ff;
+            font-weight: bold;
+        }
+        
+        .subscribe-btn {
+            width: 100%;
+            padding: 12px;
+            border-radius: 50px;
+            background: linear-gradient(90deg, #ffcc00, #ff9500);
+            border: none;
+            color: #1a1a2e;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .subscribe-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255, 204, 0, 0.3);
+        }
+    </style>
+
+    <!-- Modal de Assinatura (conteúdo) -->
+    <div class="subscription-modal" id="subscriptionModal">
+        <div class="subscription-modal-content">
+            <span class="close-modal">&times;</span>
+            <h3>Assinatura Premium</h3>
+            <p style="text-align: center; margin-bottom: 30px; opacity: 0.9;">Desbloqueie recursos exclusivos e apoie o desenvolvimento contínuo de Nebula Wars</p>
+            
+            <div class="subscription-plans">
+                <div class="subscription-plan selected">
+                    <div class="plan-header">
+                        <span class="plan-name">Mensal</span>
+                        <span class="plan-price">R$ 19,90/mês</span>
+                    </div>
+                    <ul class="plan-features">
+                        <li>500 Cristais Galácticos mensais</li>
+                        <li>Nave exclusiva "Sentinel Alpha"</li>
+                        <li>Emblemas de comandante premium</li>
+                        <li>Acesso antecipado a novos conteúdos</li>
+                        <li>Descontos em itens da loja</li>
+                    </ul>
+                    <button class="subscribe-btn">ASSINAR AGORA</button>
+                </div>
+                
+                <div class="subscription-plan">
+                    <div class="plan-header">
+                        <span class="plan-name">Trimestral</span>
+                        <span class="plan-price">R$ 49,90/trimestre</span>
+                    </div>
+                    <ul class="plan-features">
+                        <li>Todos os benefícios mensais</li>
+                        <li>1.800 Cristais Galácticos (600/mês)</li>
+                        <li>Skin exclusiva "Nebula Camo"</li>
+                        <li>15% de desconto em expansões</li>
+                    </ul>
+                    <button class="subscribe-btn">ASSINAR AGORA</button>
+                </div>
+                
+                <div class="subscription-plan">
+                    <div class="plan-header">
+                        <span class="plan-name">Anual</span>
+                        <span class="plan-price">R$ 159,90/ano</span>
+                    </div>
+                    <ul class="plan-features">
+                        <li>Todos os benefícios anteriores</li>
+                        <li>7.200 Cristais Galácticos (600/mês)</li>
+                        <li>Nave lendária "Phoenix Class"</li>
+                        <li>Título exclusivo "Defensor da Nebula"</li>
+                        <li>25% de desconto em expansões</li>
+                    </ul>
+                    <button class="subscribe-btn">ASSINAR AGORA</button>
+                </div>
+            </div>
+            
+            <p style="font-size: 0.8rem; opacity: 0.7; text-align: center;">* Cancele a qualquer momento. A assinatura renova automaticamente.</p>
+        </div>
+    </div>
+
+    <script>
+        // Controle do botão e modal de assinatura
+        const subscriptionBtn = document.querySelector('.subscription-btn');
+        const subscriptionModal = document.getElementById('subscriptionModal');
+        const closeModal = document.querySelector('.close-modal');
+        const subscriptionPlans = document.querySelectorAll('.subscription-plan');
+        
+        // Abrir modal ao clicar no botão flutuante
+        if(subscriptionBtn) {
+            subscriptionBtn.addEventListener('click', () => {
+                subscriptionModal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            });
+        }
+        
+        // Fechar modal
+        if(closeModal) {
+            closeModal.addEventListener('click', () => {
+                subscriptionModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            });
+        }
+        
+        // Fechar modal ao clicar fora
+        subscriptionModal.addEventListener('click', (e) => {
+            if(e.target === subscriptionModal) {
+                subscriptionModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+        
+        // Selecionar plano
+        subscriptionPlans.forEach(plan => {
+            plan.addEventListener('click', () => {
+                subscriptionPlans.forEach(p => p.classList.remove('selected'));
+                plan.classList.add('selected');
+            });
+        });
+        
+        // Mostrar tooltip após 5 segundos
+        setTimeout(() => {
+            document.querySelector('.subscription-tooltip').style.opacity = '1';
+            document.querySelector('.subscription-tooltip').style.visibility = 'visible';
+            document.querySelector('.subscription-tooltip').style.transform = 'translateY(0)';
+            
+            // Esconder após 8 segundos
+            setTimeout(() => {
+                document.querySelector('.subscription-tooltip').style.opacity = '0';
+                document.querySelector('.subscription-tooltip').style.visibility = 'hidden';
+                document.querySelector('.subscription-tooltip').style.transform = 'translateY(10px)';
+            }, 8000);
+        }, 5000);
+    </script>
+    
+    <!-- Font Awesome para ícones -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</body>
+</html>
